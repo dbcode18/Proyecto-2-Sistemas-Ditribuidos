@@ -1,3 +1,36 @@
+var url = "http://localhost/servidor_aplicacion/api.php";
+
+function renderizar_objetos(objetos){
+    let html_write = "";
+    objetos.forEach(objeto => {
+
+        let properties_array = Object.entries(objeto);
+
+        let html_write_properties = "";
+        properties_array.forEach(element => {
+            if(element[0] != "id"){
+                html_write_properties = html_write_properties + `
+                    <p><span>${element[0]}: </span>${element[1]}</p>
+                `;
+            }
+        });
+
+        html_write = html_write + `
+        <div class="object" data-id=${objeto.id}>
+            <h5>id: ${objeto.id}</h5>
+            ${html_write_properties}
+            <h6 class="eliminar-objeto">Eliminar Objeto</h6>
+        </div>
+        
+        `;
+    });
+
+
+    $(".objects-container").html(html_write);
+}
+
+
+
 $( document ).ready(function() {
     
     $(".add-atribute-button").click(function() {
@@ -25,9 +58,12 @@ $( document ).ready(function() {
                 let property = $(this).children("input:nth-child(1)");
                 let value = $(this).children("input:nth-child(2)");
                 if( property.val().length == 0 || value.val().length == 0 ){
-                    qq = property.val();
                     continueLoop = false;
                     alert("No pueden haber campos vacíos");
+                }
+                else if(property.val() == "id"){
+                    continueLoop = false;
+                    alert("El id es auto generado");
                 }
                 else{
                     jsonObject[property.val()] = value.val();
@@ -37,39 +73,53 @@ $( document ).ready(function() {
         if(!continueLoop){
             return;
         }
-        console.log(jsonObject);
+        // console.log(jsonObject);
         jsonObject = JSON.stringify(jsonObject);
-        send(jsonObject);
+        $.ajax({
+            type: "post",
+            url: url,
+            data: "message=" + jsonObject,
+            success: function(result){
+                result = JSON.parse(result);
+                console.log(result);
+                renderizar_objetos(result);
+            }
+        });
+
     });
 
     
+    $(document).on('click','.eliminar-objeto',function(){
+        let id_to_delete = $(this).parent().attr("data-id");
 
-    init();
+        $.ajax({
+            type: "delete",
+            url: url + "?object_id=" + id_to_delete,
+            success: function(result){
+                result = JSON.parse(result);
+                console.log(result);
+                if(!result.status){
+                    renderizar_objetos(result);
+                }
+            }
+        });
+
+    });
+
+
+
+
+    $.ajax({
+        type: "get",
+        url: url + "?objects=all",
+        success: function(result){
+            result = JSON.parse(result);
+            console.log(result);
+            renderizar_objetos(result);
+        }
+    });
+    
     
 });
 
 
-var socket;
-function init(){
-    socket = new WebSocket("ws://localhost:9000");
-    socket.onopen = function(msg) {
-        // alert("Welcome - status "+this.readyState);
-        };
-        socket.onmessage = function(msg) {
-        alert("Received: "+msg.data);
-        };
-        socket.onclose = function(msg) {
-        alert("Disconnected - status "+this.readyState);
-        };
-}
-function send(msg){
-    if(msg.length > 0) {
-    socket.send(msg);
-    }
-}
-function quit(){ 
-    socket.close(); 
-}
-function reconnect(){ 
-    quit(); init();
-}

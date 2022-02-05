@@ -82,6 +82,15 @@ body{
     cursor: pointer;
 }
 
+.replicar-objeto{
+    color: red;
+    font-size: 15px;
+    margin: 10px 0;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+
 
 
 .workspace > div:last-child{

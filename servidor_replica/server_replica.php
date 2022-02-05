@@ -18,7 +18,12 @@ do{
     if($metodo=='VOTE_REQUEST'){
         $output='';
         if($accion=='COMMIT')       $output='VOTE_COMMIT';
-        else if($accion=='ABORT')  $output='VOTE_ABORT';    
+        else if($accion=='ABORT')   $output='VOTE_ABORT';  
+        else if($accion=='RANDOM'){
+            $rand=rand(0,1);
+            if($rand==0) $output='VOTE_COMMIT';
+            else if($rand==1)  $output='VOTE_ABORT';
+        }  
     }
 
     socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");

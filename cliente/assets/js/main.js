@@ -109,6 +109,7 @@ $( document ).ready(function() {
     });
 
     $(document).on('click','.replicar-objeto',function(){
+        console.log('click replicacion')
         let id = $(this).parent().attr("data-id");
         var url = window.location.origin+"/proyecto_2_sd/manejador_objetos/api_replicacion.php";
         $.ajax({
@@ -116,7 +117,27 @@ $( document ).ready(function() {
             url: url,
             data:"id=" + id,
             success: function(result){
-                alert(result)
+                console.log('Replicacion')
+                console.log(result)
+                // result = JSON.parse(result);
+                // console.log(result);
+                //if(!result.status){
+                //    renderizar_objetos(result);
+                //}
+            }
+        });
+
+    });
+
+
+    $(document).on('click','.restaurar-objeto',function(){
+        var url = window.location.origin+"/proyecto_2_sd/manejador_objetos/api_restauracion.php";
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function(result){
+                console.log('Restauracion')
+                console.log(result)
                 // result = JSON.parse(result);
                 // console.log(result);
                 //if(!result.status){

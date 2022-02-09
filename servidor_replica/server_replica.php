@@ -12,7 +12,6 @@ do{
     $spawn  = socket_accept($socket) or die("Could not accept incoming connection\n");
     $data   = socket_read($spawn, 1024) or die("Could not read input\n");
     $data   =json_decode($data);
-    print_r($data);
     $accion=$data->accion;
     $metodo=$data->metodo;
     if($metodo=='VOTE_REQUEST'){
@@ -24,32 +23,51 @@ do{
             if($rand==0) $output='VOTE_COMMIT';
             else if($rand==1)  $output='VOTE_ABORT';
         }  
+
+        socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");
+
+
+        $data = socket_read($spawn, 1024) or die("Could not read input\n");
+        $data=json_decode($data);
+        
+    
+        $output=false;
+        if($data->metodo=="GLOBAL_COMMIT"){
+            print_r("GLOBAL COMMIT\n");
+            print_r($data);
+    
+            $objetos=$data->objetos;
+            $bytes = file_put_contents("myfile.json", $objetos); 
+    
+            $output=true;
+        }
+    
+        else if($data->metodo=='GLOBAL_ABORT'){
+            print_r("GLOBAL ABORT\n");
+            $output='false';
+        }
+    
+        print_r("GLOBAL RESPONSE\n");
+        print_r($output);
+        socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");
     }
 
-    socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");
+    else if($metodo=='RecibirObjetos'){
+        $dirPath = dirname(__FILE__);
+        $filePath = $dirPath . "\myfile.json";
+            
+        // reading file
+        $f = fopen($filePath, 'r');
+        $contents = fread($f, filesize($filePath));
+        fclose($f);
 
-    $data = socket_read($spawn, 1024) or die("Could not read input\n");
-    $data=json_decode($data);
+        $json_objects = json_decode($contents);
 
-    $output=false;
-    if($data->metodo=="GLOBAL_COMMIT"){
-        print_r("GLOBAL COMMIT\n");
-        print_r($data);
+        $output=json_encode($json_objects);
 
-        $objetos=$data->objetos;
-        $bytes = file_put_contents("myfile.json", $objetos); 
-
-        $output=true;
+        socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");
     }
 
-    else if($data->metodo=='GLOBAL_ABORT'){
-        print_r("GLOBAL ABORT\n");
-        $output='false';
-    }
-
-    print_r("GLOBAL RESPONSE\n");
-    print_r($output);
-    socket_write($spawn, $output, strlen ($output)) or die("Could not write output\n");
 
 
    

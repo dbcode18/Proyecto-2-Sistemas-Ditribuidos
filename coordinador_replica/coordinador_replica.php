@@ -137,7 +137,7 @@ class RestaurarObjetos{
         echo("\nResultado Socket 1\n");
         echo($result."\n");
 
-        if(!empty($result)){
+        if(!empty($result) && $result!=null && $result!='[]'){
             socket_close($socket);
             return $result;
         }
@@ -152,7 +152,7 @@ class RestaurarObjetos{
         echo("\nResultado Socket 2\n");
         echo($result2."\n");
 
-        if(!empty($result2)){
+        if(!empty($result2) && $result2!=null && $result2!='[]'){
             socket_close($socket2);
             return $result2;;
         }

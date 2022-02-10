@@ -110,21 +110,22 @@ $( document ).ready(function() {
     $(document).on('click','.replicar-objeto',function(){
         console.log('click replicacion')
         let id = $(this).parent().attr("data-id");
-        var url = window.location.origin+"/proyecto_2_sd/manejador_objetos/api_replicacion.php";
         var accion= $('#accion').val();
+
+        var datos = {
+            "accion"    : accion, // Dato #1 a enviar
+            "replicate" : true // Dato #2 a enviar
+
+        };
         $.ajax({
             type: "POST",
             url: url,
-            data:"accion=" + accion,
+            data:datos,
             success: function(result){
                 console.log('Replicacion')
                 console.log(result)
-                alert(result);
-                //result = JSON.parse(result);
-                // console.log(result);
-                //if(!result.status){
-                //    renderizar_objetos(result);
-                //}
+                if(result==1)alert('Replicacion exitosa')
+                else alert('Replicacion Fallida');
             }
         });
 
@@ -132,20 +133,15 @@ $( document ).ready(function() {
 
 
     $(document).on('click','.restaurar-objeto',function(){
-        var url = window.location.origin+"/proyecto_2_sd/manejador_objetos/api_restauracion.php";
         $.ajax({
             type: "POST",
             url: url,
+            data: "restore=true",
             success: function(result){
                 console.log('Restauracion')
                 console.log(result);
                 alert('Restauracion Exitosa');
-                location.reload();
-                // result = JSON.parse(result);
-                // console.log(result);
-                //if(!result.status){
-                //    renderizar_objetos(result);
-                //}
+               // location.reload();
             }
         });
 

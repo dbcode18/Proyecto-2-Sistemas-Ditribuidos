@@ -2,7 +2,7 @@
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-        $host    = "localhost";
+        $host    = "172.29.225.74";
         $port    = 20205;
         
         $data=array();

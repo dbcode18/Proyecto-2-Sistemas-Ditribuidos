@@ -1,5 +1,5 @@
 <?php
-$host = "localhost";
+$host = "172.29.88.131";
 $port = 20207;
 // No Timeout 
 set_time_limit(0);

@@ -45,7 +45,7 @@ class ReplicarObjetos{
         $data=json_encode($data);
 
         //SOCKET 1
-        $host    = "localhost";
+        $host    = "172.29.42.105";
         $port    = 20206;
         $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
         $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");  
@@ -55,7 +55,7 @@ class ReplicarObjetos{
         echo($result."\n");
 
         //SOCKET 2
-        $host2    = "localhost";
+        $host2    = "172.29.88.131";
         $port2    = 20207;
         $socket2 = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
         $result2 = socket_connect($socket2, $host2, $port2) or die("Could not connect to server\n");  
@@ -128,7 +128,7 @@ class RestaurarObjetos{
         
 
         //SOCKET 1
-        $host    = "localhost";
+        $host    = "172.29.42.105";
         $port    = 20206;
         $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
         $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");  
@@ -143,7 +143,7 @@ class RestaurarObjetos{
         }
 
         //SOCKET 2
-        $host2    = "localhost";
+        $host2    = "172.29.88.131";
         $port2    = 20207;
         $socket2 = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
         $result2 = socket_connect($socket2, $host2, $port2) or die("Could not connect to server\n");  

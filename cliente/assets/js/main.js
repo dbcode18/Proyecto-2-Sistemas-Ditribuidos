@@ -21,7 +21,6 @@ function renderizar_objetos(objetos){
             <h5>id: ${objeto.id}</h5>
             ${html_write_properties}
             <h6 class="eliminar-objeto">Eliminar Objeto</h6>
-            <h6 class="replicar-objeto">Replicar Objeto</h6>
         </div>
         
         `;
@@ -112,14 +111,16 @@ $( document ).ready(function() {
         console.log('click replicacion')
         let id = $(this).parent().attr("data-id");
         var url = window.location.origin+"/proyecto_2_sd/manejador_objetos/api_replicacion.php";
+        var accion= $('#accion').val();
         $.ajax({
             type: "POST",
             url: url,
-            data:"id=" + id,
+            data:"accion=" + accion,
             success: function(result){
                 console.log('Replicacion')
                 console.log(result)
-                // result = JSON.parse(result);
+                alert(result);
+                //result = JSON.parse(result);
                 // console.log(result);
                 //if(!result.status){
                 //    renderizar_objetos(result);
@@ -137,7 +138,9 @@ $( document ).ready(function() {
             url: url,
             success: function(result){
                 console.log('Restauracion')
-                console.log(result)
+                console.log(result);
+                alert('Restauracion Exitosa');
+                location.reload();
                 // result = JSON.parse(result);
                 // console.log(result);
                 //if(!result.status){

@@ -18,7 +18,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         
         
         $data=array();
-        $data['accion']='RANDOM';
+        $data['accion']=$_POST['accion'];
         $data['tipo']='ReplicarObjetos';
         $data['objetos']=json_encode($json_objects);
 
